@@ -1,0 +1,14 @@
+{
+  "name": "codingChallenge0",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "git@github.com:blkdm0n/codingChallenge0.git",
+  "author": "Bernard Kitchens <bernard.kitchens@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jasmine": "^3.2.0",
+    "nodemon": "^1.18.4"
+  }
+}
