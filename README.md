@@ -10,3 +10,5 @@ Implement the Smartcar API spec by making an HTTP request to the GM API spec
 
 Flow:  client --request --> Smartcar API --> GM API
 
+Todos
+[] Write some tests
