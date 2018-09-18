@@ -1,5 +1,5 @@
 const express = require("express");
-const port = 3000;
+const PORT = 3000;
 const request = require("request-promise");
 const bodyParser = require("body-parser");
 
@@ -13,19 +13,6 @@ var vehicleID;
 // GET REQUEST FROM CLIENT TO SERVER
 app.get(`/`, (req, res) => {
   res.sendFile(__dirname + "/index.html");
-});
-
-// POST REQUEST FROM CLIENT TO SERVER
-app.post(`/vehicle-validation`, (req, res) => {
-  function getVehicleID(data) {
-    vehicleID = data.body.vehicleID;
-  }
-  getVehicleID(req);
-  if (vehicleID === `1234` || vehicleID === `1235`) {
-    res.send(`Your vehicle ID is ${vehicleID}`);
-  } else {
-    res.send(`Invalid vehicle ID number please try again`);
-  }
 });
 
 // OPTIONS FOR REQUEST
@@ -87,7 +74,7 @@ app.get("/vehicles/:id/doors", (req, res) => {
       res.json(vehicleInfo);
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
       res.send("Error retrieving Security Status");
     });
 });
@@ -105,9 +92,8 @@ app.get(["/vehicles/:id/fuel", "/vehicles/:id/battery"], (req, res) => {
           percent: data.tankLevel.value
         };
         res.json(vehicleInfo);
-      } else { 
+      } else {
         if (req.url === `/vehicles/${options.body.id}/battery`) {
-          
           let vehicleInfo = {
             percent: data.batteryLevel.value
           };
@@ -121,25 +107,21 @@ app.get(["/vehicles/:id/fuel", "/vehicles/:id/battery"], (req, res) => {
     });
 });
 
-app.get(["/vehicles/:id/engine/start", "/vehicles/:id/engine/stop"], (req, res) => {
+app.post("/vehicles/:id/engine/:action", (req, res) => {
   options.uri = gmAPI + "/actionEngineService";
   options.body.id = req.params.id;
-  
-  if (req.url === `/vehicles/${options.body.id}/engine/start`) {
+
+  if (req.params.action.toUpperCase() === "START") {
     options.body.command = "START_VEHICLE";
   } else {
-      if (req.url === `/vehicles/${options.body.id}/engine/stop`) {
-        options.body.command = "STOP_VEHICLE";
-      }
+    options.body.command = "STOP_VEHICLE";
   }
-
   const engineStatus = data => {
-    if ((data.actionResult.status === "EXECUTED")) {
+    if (data.actionResult.status === "EXECUTED") {
       return "success";
-    } 
+    }
     return "error";
   };
-
   request(options)
     .then(data => {
       options.uri = gmAPI;
@@ -154,6 +136,8 @@ app.get(["/vehicles/:id/engine/start", "/vehicles/:id/engine/stop"], (req, res) 
     });
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is listening on ${PORT}`);
 });
+
+module.exports = app;
