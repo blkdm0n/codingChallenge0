@@ -12,7 +12,7 @@ Flow:  client --request --> Smartcar API --> GM API
 
 
 To Test The Updated Smart Car API
-1.  clone the project from GitHub
-2.  cd into the SmartCar API directory
-3.  install dependencies by typing `yarn` in the project
+1.  Clone the project from GitHub at https://github.com/blkdm0n/smartCarAPI
+2.  cd into the project directory
+3.  Install dependencies by typing `yarn` in the projects root directory
 4.  
