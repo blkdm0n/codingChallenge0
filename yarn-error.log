@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/8.9.1/bin/node /usr/local/bin/yarn add node-request-promise
+  /usr/local/Cellar/node/8.9.1/bin/node /usr/local/bin/yarn run-server
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/latest/bin
@@ -14,17 +14,13 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/node-request-promise: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:64202:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:137468:22)
-      at emitTwo (events.js:126:13)
-      at Request.emit (events.js:214:7)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:138440:10)
-      at emitOne (events.js:116:13)
-      at Request.emit (events.js:211:7)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:138362:12)
-      at Object.onceWrapper (events.js:313:30)
-      at emitNone (events.js:111:20)
+  SyntaxError: /Users/bernardkitchens/Desktop/codingChallenge0/package.json: Unexpected string in JSON at position 277
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1130:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:92:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:103:13
+      at <anonymous>
 
 npm manifest: 
   {
@@ -34,12 +30,17 @@ npm manifest:
     "repository": "git@github.com:blkdm0n/codingChallenge0.git",
     "author": "Bernard Kitchens <bernard.kitchens@gmail.com>",
     "license": "MIT",
+    "scripts": {
+      "run-server": "nodemon server"
+    }
     "dependencies": {
       "body-parser": "^1.18.3",
       "express": "^4.16.3",
+      "express-validator": "^5.3.0",
       "jasmine": "^3.2.0",
       "nodemon": "^1.18.4",
-      "request": "^2.88.0"
+      "request": "^2.88.0",
+      "request-promise": "^4.2.2"
     }
   }
 
@@ -188,6 +189,10 @@ Lockfile:
   binary-extensions@^1.0.0:
     version "1.11.0"
     resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
+  
+  bluebird@^3.5.0:
+    version "3.5.2"
+    resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.2.tgz#1be0908e054a751754549c270489c1505d4ab15a"
   
   body-parser@1.18.2:
     version "1.18.2"
@@ -573,6 +578,13 @@ Lockfile:
       regex-not "^1.0.0"
       snapdragon "^0.8.1"
       to-regex "^3.0.1"
+  
+  express-validator@^5.3.0:
+    version "5.3.0"
+    resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-5.3.0.tgz#18a4e4a6e6410e3b9d492fb4ffcb4556fec51806"
+    dependencies:
+      lodash "^4.17.10"
+      validator "^10.4.0"
   
   express@^4.16.3:
     version "4.16.3"
@@ -1160,6 +1172,10 @@ Lockfile:
     version "4.0.8"
     resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   
+  lodash@^4.13.1, lodash@^4.17.10:
+    version "4.17.11"
+    resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  
   lowercase-keys@^1.0.0:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
@@ -1638,6 +1654,21 @@ Lockfile:
     version "1.6.1"
     resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
   
+  request-promise-core@1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.1.tgz#3eee00b2c5aa83239cfb04c5700da36f81cd08b6"
+    dependencies:
+      lodash "^4.13.1"
+  
+  request-promise@^4.2.2:
+    version "4.2.2"
+    resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.2.tgz#d1ea46d654a6ee4f8ee6a4fea1018c22911904b4"
+    dependencies:
+      bluebird "^3.5.0"
+      request-promise-core "1.1.1"
+      stealthy-require "^1.1.0"
+      tough-cookie ">=2.3.3"
+  
   request@^2.88.0:
     version "2.88.0"
     resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
@@ -1867,6 +1898,10 @@ Lockfile:
     version "1.4.0"
     resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
   
+  stealthy-require@^1.1.0:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
+  
   stream-combiner@^0.2.2:
     version "0.2.2"
     resolved "http://registry.npmjs.org/stream-combiner/-/stream-combiner-0.2.2.tgz#aec8cbac177b56b6f4fa479ced8c1912cee52858"
@@ -1975,7 +2010,7 @@ Lockfile:
     dependencies:
       nopt "~1.0.10"
   
-  tough-cookie@~2.4.3:
+  tough-cookie@>=2.3.3, tough-cookie@~2.4.3:
     version "2.4.3"
     resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
     dependencies:
@@ -2079,6 +2114,10 @@ Lockfile:
   uuid@^3.3.2:
     version "3.3.2"
     resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
+  
+  validator@^10.4.0:
+    version "10.7.1"
+    resolved "https://registry.yarnpkg.com/validator/-/validator-10.7.1.tgz#dd4cc750c2134ce4a15a2acfc7b233669d659c5b"
   
   vary@~1.1.2:
     version "1.1.2"

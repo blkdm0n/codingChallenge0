@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//var vehicleID;
+var vehicleID;
 
 // GET REQUEST FROM CLIENT TO SERVER
 app.get(`/`, (req, res) => {
@@ -29,13 +29,12 @@ app.post(`/vehicle-validation`, (req, res) => {
 });
 
 // OPTIONS FOR REQUEST
-const gmAPI = "http://gmapi.azurewebsites.net/";
+const gmAPI = "http://gmapi.azurewebsites.net";
 const options = {
   uri: gmAPI,
   method: `POST`,
   body: {
-    //this needs to change with user id
-    id: "1234",
+    id: null,
     responseType: "JSON"
   },
   json: true
@@ -51,30 +50,31 @@ app.get(`/vehicles/:id`, (req, res) => {
     }
   };
   options.uri = options.uri + "/getVehicleInfoService";
-  // HTTP REQUEST
+  options.body.id = req.params.id;
   request(options)
     .then(data => {
+      options.uri = gmAPI;
       data = data.data;
-
       let vehicleInfo = {
         vin: data.vin.value,
         color: data.color.value,
         doorCount: countDoors(data),
         driveTrain: data.driveTrain.value
       };
-      // TEST THIS => options.uri = gmAPI;
       res.json(vehicleInfo);
     })
     .catch(err => {
+      console.log(err);
       res.send("Error retrieving Vehicle Info");
     });
 });
 
 app.get("/vehicles/:id/doors", (req, res) => {
   options.uri = options.uri + "/getSecurityStatusService";
-
+  options.body.id = req.params.id;
   request(options)
     .then(data => {
+      options.uri = gmAPI;
       data = data.data;
       let vehicleInfo = [];
       data.doors.values.forEach(door => {
@@ -87,62 +87,69 @@ app.get("/vehicles/:id/doors", (req, res) => {
       res.json(vehicleInfo);
     })
     .catch(err => {
+      console.log(err)
       res.send("Error retrieving Security Status");
     });
 });
 
 app.get(["/vehicles/:id/fuel", "/vehicles/:id/battery"], (req, res) => {
   options.uri = options.uri + "/getEnergyService";
+  options.body.id = req.params.id;
 
   request(options)
     .then(data => {
-      console.log(data, "<=== DATA HERE");
+      options.uri = gmAPI;
       data = data.data;
-      if (req.url === "/vehicles/:id/fuel") {
+      if (req.url === `/vehicles/${options.body.id}/fuel`) {
         let vehicleInfo = {
           percent: data.tankLevel.value
         };
-        console.log(options.uri, "Before");
-        options.uri = gmAPI;
-        console.log(options.uri, "After");
         res.json(vehicleInfo);
-      } else {
-        if (req.url === "/vehicles/:id/battery") {
+      } else { 
+        if (req.url === `/vehicles/${options.body.id}/battery`) {
+          
           let vehicleInfo = {
             percent: data.batteryLevel.value
           };
-          options.uri = gmAPI;
           res.json(vehicleInfo);
         }
       }
     })
-    .catch(error => {
+    .catch(err => {
+      console.log(err);
       res.send("Error retrieving Energy Levels");
     });
 });
 
-app.get("/vehicles/:id/engine", (req, res) => {
+app.get(["/vehicles/:id/engine/start", "/vehicles/:id/engine/stop"], (req, res) => {
   options.uri = gmAPI + "/actionEngineService";
-  options.body["command"] = "START_VEHICLE";
+  options.body.id = req.params.id;
+  
+  if (req.url === `/vehicles/${options.body.id}/engine/start`) {
+    options.body.command = "START_VEHICLE";
+  } else {
+      if (req.url === `/vehicles/${options.body.id}/engine/stop`) {
+        options.body.command = "STOP_VEHICLE";
+      }
+  }
 
   const engineStatus = data => {
-    if (data.actionResult.status = "EXECUTED") {
+    if ((data.actionResult.status === "EXECUTED")) {
       return "success";
-    } else {
-      return "error";
-    }
-  }
-  console.log(options.body);
+    } 
+    return "error";
+  };
 
   request(options)
     .then(data => {
-
-      let vehicleInfo = {
+      options.uri = gmAPI;
+      const vehicleInfo = {
         status: engineStatus(data)
-      }
+      };
       res.json(vehicleInfo);
     })
-    .catch(error => {
+    .catch(err => {
+      console.log(err);
       res.send("Error retrieving Engine Status");
     });
 });

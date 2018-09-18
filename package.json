@@ -5,6 +5,10 @@
   "repository": "git@github.com:blkdm0n/codingChallenge0.git",
   "author": "Bernard Kitchens <bernard.kitchens@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "run-server": "nodemon server",
+    "test": "jasmine"
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
