@@ -1,13 +1,10 @@
 const express = require("express");
 const request = require("request-promise");
-const bodyParser = require("body-parser");
 const helpers = require("./helpers.js");
 const PORT = 3000;
 
 const app = express();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 // OPTIONS FOR REQUEST
 const gmAPI = "http://gmapi.azurewebsites.net";
