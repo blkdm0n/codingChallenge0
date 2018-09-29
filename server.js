@@ -5,8 +5,7 @@ const PORT = 3000;
 
 const app = express();
 app.use(express.json());
-
-// OPTIONS FOR REQUEST
+ 
 const gmAPI = "http://gmapi.azurewebsites.net";
 const options = {
   uri: gmAPI,
